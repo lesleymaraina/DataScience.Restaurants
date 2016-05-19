@@ -1,7 +1,0 @@
-
-For lxml (http://stackoverflow.com/questions/6504810/how-to-install-lxml-on-ubuntu/6504860#6504860)
-
-	libxml2-dev
-	libsxlt1-dev
-	python-dev
-	zlib1g-dev
