@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang='en'>
+	<head>
+		<link type='text/css' rel='stylesheet' href="{{url_for('static', filename='css/style.css') }}" />
+		<script type='text/javascript'
+		src='https://maps.googleapis.com/maps/api/js'>
+		</script>
+
+		<script type='text/javascript'>
+			var map;
+			var marker;
+			function initialize() {
+				var mapOptions = {
+					center: new google.maps.LatLng(38.8904266,-77.0272737), zoom: 14
+				};
+				map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+				google.maps.event.addListener(map, 'click', function(event) {
+					placeMarker(event.latLng);
+					});
+					placeRest({{restaurants | safe}});
+				}
+
+				function placeMarker(location) {
+					if (marker) {
+						marker.setPosition(location);
+					} else {
+						marker = new google.maps.Marker({
+							position: location,
+							map: map
+						});
+					}
+					document.getElementById('latitude').value = location.lat();
+					document.getElementById('longitude').value = location.lng();
+				}
+
+				function placeRest(restaurants) {
+					for (i=0; i<restaurants.length; i++) {
+						restaurants = new google.maps.Marker( {
+							position: new google.maps.LatLng(restaurants[i].latitude, restaurants[i].longitude),
+							map: map, title: restaurants[i].category + '\n' + restuarants[i].description
+						});
+					}
+				}
+		</script>
+	</head>
+		<body onload='initialize()'>
+			<h1>Restaurant Map</h1>
+			<p>Recommended Restaurants</p>
+			<div id='map-canvas'></div>
+			<div id='newrestform'>
+				<h2>Feed me, Seymour!</h2>
+				<form action='/submit_rest' method='POST'>
+					<label for='category'>Cuisine</label>
+					<select name='category' id='category'>
+						{% for category in categories %}
+							<option value='{{category}}'>{{category}}</option>
+						{% endfor %}
+					</select>
+					<label for='price'>Price</label>
+					<select name='price' id='price'>
+						{% for price in pricepref %}
+							<option value='{{price}}'>{{price}}</option>
+						{% endfor %}
+					</select>
+					<label for='rating'>Rating</label>
+					<select name='rating' id='rating'>
+						{% for rating in ratingpref %}
+							<option value='{{rating}}'>{{rating}}</option>
+						{% endfor %}
+					</select>
+					<label for='metro'>Metro Line</label>
+					<select name='metro' id='metro'>
+						{% for metro in metropref %}
+							<option value='{{metro}}'>{{metro}}</option>
+						{% endfor %}
+					</select>
+					<label for='latitude'>Latitude</label>
+					<input name='latitude' id='latitude' type='text' readonly>
+					<label for='longitude'>Longitude</label>
+					<input name='longitude' id='longitude' type='text' readonly>
+					<label for='description'>Keywords</label>
+					<textarea name='description' id='description'
+							placeholder="Keyword Search or Description"></textarea>
+					<input type='submit' value="Let's Eat!">
+				</form>
+			</div>
+		</body>
+</html>
