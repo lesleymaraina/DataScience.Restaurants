@@ -133,7 +133,7 @@ class ValueByKey(BaseEstimator, TransformerMixin):
 
 def create_store_transforms(rl):
     l=rl
-    k=10
+    k=15
     km = KMeans(n_clusters=k, init='k-means++')
     print("Clustering sparse data with %s" % km)
 

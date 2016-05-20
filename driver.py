@@ -121,9 +121,9 @@ print()
 
 ## VIEW FITTED MODEL CLUSTERS ##
 labels = km.labels_ # list of label numbers
-print(labels)
+#print(labels)
 centroids = km.cluster_centers_ # list of cluster centers (vector)
-print(centroids)
+#print(centroids)
 
 clusters = {}
 n = 0
@@ -132,9 +132,11 @@ for item in labels:
     else: clusters[item] = [l[n]['name']]
     n +=1
 
+'''
 for item in clusters:
     print("Cluster", item)
     for i in clusters[item]: print(i)
+'''
 
 data = {'dist_to_new': [], 'nearest_metro': [], 'name': [], 'cluster': [], 'latitude': [], 'longitude': [], 'rating_level': [], 'price_level': [], 'type_2': [], 'city_group': [], 'street': [], 'zip': [], 'all_mline': []}
 n = 0
@@ -166,7 +168,7 @@ for i in range(0,len(l)):
 print()
 print("Matched cluster: ", new_lbl)
 print()
-print(type(new_lbl[0].item()))
+#print(type(new_lbl[0].item()))
 
 df = pd.DataFrame(data)
 df['dist'] = ''
@@ -180,7 +182,7 @@ curr_city = results['city_group'].iloc[0]
 results = df[df.cluster == new_lbl[0].item()].sort_values('dist_to_new', ascending=True)  # Sort by similarity distance
 
 results = results[results.city_group == curr_city]
-print(results)
+print(results[:15][['name', 'type_2', 'street']])
 
 ############################
 # JBB - We don't want these additional filters because we don't have enough data points #
